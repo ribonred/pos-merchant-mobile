@@ -1,8 +1,10 @@
 name: Build APK
 
 on:
-  # only going to run when these files are modified (version is updated)
+  # only going to run when any of these files are modified in master (version is updated)
   push:
+    branches:
+      - master
     paths:
       - 'pubspec.yaml'
       - '.github/workflows/main.yml'
