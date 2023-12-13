@@ -9,6 +9,7 @@ class PageLayout extends StatelessWidget {
   final String? subtitle;
   final bool showBackButton;
   final bool singleLineTitle;
+  final List<Widget>? actions;
   final List<Widget> body;
   final Widget? callToAction;
 
@@ -18,6 +19,7 @@ class PageLayout extends StatelessWidget {
     this.subtitle,
     this.showBackButton = true,
     this.singleLineTitle = false,
+    this.actions,
     required this.body,
     this.callToAction,
   });
@@ -40,6 +42,7 @@ class PageLayout extends StatelessWidget {
                 TitleBar(
                   title: title,
                   subtitle: subtitle,
+                  actions: actions,
                   showBackButton: showBackButton,
                   singleLine: singleLineTitle,
                 ),

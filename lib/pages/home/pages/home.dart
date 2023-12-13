@@ -1,10 +1,12 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../components/components.dart';
-import '../../utils/utils.dart';
+import '../../../components/components.dart';
+import '../../../utils/utils.dart';
+import '../home.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   static const routeName = '/';
 
   const HomePage({super.key});
@@ -12,15 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map> items = [
-      {
-        'icon': Icons.qr_code,
-        'title': 'Show QR',
-        'page': const PageLayout(
-          title: 'QR Code',
-          singleLineTitle: true,
-          body: [],
-        )
-      },
+      {'icon': Icons.qr_code, 'title': 'Show QR', 'page': const QrMenuPage()},
       {
         'icon': Icons.menu_book,
         'title': 'Menu',
@@ -51,8 +45,15 @@ class HomePage extends StatelessWidget {
     ];
 
     return PageLayout(
-      title: 'Halo Nama Toko',
+      title: 'Halo Nama Toko yang panjang',
       showBackButton: false,
+      // singleLineTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () => controller.logout(),
+          icon: const Icon(Icons.logout),
+        )
+      ],
       body: [
         GridView.builder(
           shrinkWrap: true,
@@ -90,7 +91,7 @@ class HomePage extends StatelessWidget {
                   item['title'],
                   style: Theme.of(context)
                       .textTheme
-                      .titleMedium
+                      .titleSmall
                       ?.copyWith(fontWeight: FontWeight.w600),
                 ),
               ],
@@ -101,36 +102,39 @@ class HomePage extends StatelessWidget {
       callToAction: Container(
         padding: PaddingSizes.medium,
         decoration: const BoxDecoration(
-            color: AppColors.primaryOrange,
-            borderRadius: BorderRadiusSizes.small,
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 6.0,
-                color: Colors.black38,
-                offset: Offset(0, 2),
-              )
-            ]),
-        child: const Row(
+          color: AppColors.primaryOrange,
+          borderRadius: BorderRadiusSizes.small,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 6.0,
+              color: Colors.black38,
+              offset: Offset(0, 2),
+            )
+          ],
+        ),
+        child: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.monetization_on,
               color: Colors.white,
               size: 48.0,
             ),
-            Spacing.horizontalSmall(),
+            const Spacing.horizontalSmall(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Total sales for the day',
                   style: TextStyle(color: Colors.white),
                 ),
-                Text(
-                  'Rp. 0',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
+                GetX<HomeController>(
+                  builder: (controller) => Text(
+                    'Rp. ${controller.totalSales.value}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
                   ),
                 ),
               ],

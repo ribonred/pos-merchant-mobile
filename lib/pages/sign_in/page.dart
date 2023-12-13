@@ -6,7 +6,7 @@ import '../../components/components.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends GetView<SignInController> {
   static const routeName = '/sign-in';
 
   const SignInPage({super.key});
@@ -19,10 +19,12 @@ class SignInPage extends StatelessWidget {
         title: 'Sign in',
         subtitle: 'Sign in to your account',
         body: [
-          const AppTextInput(
+          AppTextInput(
             labelText: 'Email',
             hintText: 'Your email',
             keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            onChanged: (value) => controller.email.value = value,
           ),
           const Spacing(),
           ObxValue<RxBool>(
@@ -35,7 +37,11 @@ class SignInPage extends StatelessWidget {
                   visible.value ? Icons.visibility : Icons.visibility_off,
                 ),
               ),
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
               obscureText: visible.value,
+              onChanged: (value) => controller.password.value = value,
+              onSubmitted: (_) => controller.logIn(),
             ),
             true.obs,
           ),
@@ -54,9 +60,11 @@ class SignInPage extends StatelessWidget {
           ),
           const Spacing.small(),
           AppButton.compact(
-            onPressed: () => Get.offAllNamed(HomePage.routeName),
-            label: 'Log in',
-          ),
+              onPressed: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                controller.logIn();
+              },
+              label: 'Log in'),
           const Spacing(),
           RichText(
             text: TextSpan(

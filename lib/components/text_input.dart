@@ -9,6 +9,7 @@ class AppTextInput extends StatelessWidget {
   final String? labelText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final TextInputAction textInputAction;
   final TextInputType? keyboardType;
   final bool obscureText;
   final Function(String)? onChanged;
@@ -21,6 +22,7 @@ class AppTextInput extends StatelessWidget {
     this.labelText,
     this.prefixIcon,
     this.suffixIcon,
+    this.textInputAction = TextInputAction.next,
     this.keyboardType,
     this.obscureText = false,
     this.onChanged,
@@ -53,8 +55,7 @@ class AppTextInput extends StatelessWidget {
             ],
           ),
           child: TextField(
-            keyboardType: keyboardType,
-            obscureText: obscureText,
+            controller: controller,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
@@ -73,6 +74,11 @@ class AppTextInput extends StatelessWidget {
                 vertical: 8.0,
               ),
             ),
+            keyboardType: keyboardType,
+            obscureText: obscureText,
+            onChanged: onChanged,
+            onSubmitted: onSubmitted,
+            textInputAction: textInputAction,
           ),
         ),
       ],
