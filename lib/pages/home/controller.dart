@@ -20,9 +20,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getQrMenu() async {
-    String accessToken = db.getAccessToken()!;
-
-    final response = await api.getQrMenu(accessToken);
+    final response = await api.getQrMenu();
     response.handleResponse(
       onSuccess: (result) async {
         result as QrCode;

@@ -6,8 +6,9 @@ import 'sign_in.dart';
 class SignInProvider extends GetConnect {
   @override
   void onInit() {
-    httpClient.defaultDecoder = (map) => Authorization.fromJson(map);
     httpClient.baseUrl = dotenv.env['POS_API_URL'];
+    // httpClient.addResponseModifier(debugInterceptor);
+    httpClient.defaultDecoder = (map) => Authorization.fromJson(map);
   }
 
   Future<Response<Authorization?>> logIn(String email, String password) async {
