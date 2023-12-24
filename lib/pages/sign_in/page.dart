@@ -60,11 +60,12 @@ class SignInPage extends GetView<SignInController> {
           ),
           const Spacing.small(),
           AppButton.compact(
-              onPressed: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                controller.logIn();
-              },
-              label: 'Log in'),
+            onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              controller.logIn();
+            },
+            label: 'Log in',
+          ),
           const Spacing(),
           RichText(
             text: TextSpan(
@@ -73,7 +74,8 @@ class SignInPage extends GetView<SignInController> {
                 TextSpan(
                   text: 'Sign up',
                   style: const TextStyle(color: AppColors.primaryOrange),
-                  recognizer: TapGestureRecognizer()..onTap = () {},
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => Get.toNamed(SignUpPage.routeName),
                 ),
               ],
               style: Theme.of(context).textTheme.bodySmall,
