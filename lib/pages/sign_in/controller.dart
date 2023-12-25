@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../models/models.dart';
+import '../../providers/providers.dart';
 import '../../services/services.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
@@ -8,7 +10,7 @@ class SignInController extends GetxController {
   static SignInController get to => Get.find();
 
   final DatabaseService db = Get.find();
-  final SignInProvider api = Get.find();
+  final AuthProvider api = Get.find();
 
   final RxString email = ''.obs;
   final RxString password = ''.obs;

@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../models/models.dart';
+import '../../providers/providers.dart';
 import '../../services/services.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
