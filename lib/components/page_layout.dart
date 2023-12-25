@@ -5,7 +5,7 @@ import '../utils/utils.dart';
 import 'components.dart';
 
 class PageLayout extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? subtitle;
   final bool showBackButton;
   final bool singleLineTitle;
@@ -15,7 +15,7 @@ class PageLayout extends StatelessWidget {
 
   const PageLayout({
     super.key,
-    required this.title,
+    this.title,
     this.subtitle,
     this.showBackButton = true,
     this.singleLineTitle = false,
