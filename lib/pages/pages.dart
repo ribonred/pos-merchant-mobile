@@ -32,6 +32,27 @@ List<GetPage> appPages = [
     binding: EmailVerificationBinding(),
   ),
   GetPage(
+    name: EmailVerificationPage.routeName,
+    page: () => const EmailVerificationPage(),
+    middlewares: [SessionMiddleware()],
+    binding: EmailVerificationBinding(),
+  ),
+  GetPage(
+    name: EmailChangePage.routeName,
+    page: () => const EmailChangePage(),
+    binding: EmailVerificationBinding(),
+  ),
+  GetPage(
+    name: OTPInputPage.routeName,
+    page: () => const OTPInputPage(),
+    binding: EmailVerificationBinding(),
+  ),
+  GetPage(
+    name: VerificationSuccessfulPage.routeName,
+    page: () => const VerificationSuccessfulPage(),
+    binding: EmailVerificationBinding(),
+  ),
+  GetPage(
     name: SignInPage.routeName,
     page: () => const SignInPage(),
     binding: SignInBinding(),
