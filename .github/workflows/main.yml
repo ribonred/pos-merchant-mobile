@@ -6,11 +6,8 @@ on:
     branches:
       - master
     paths:
-      - 'pubspec.yaml'
-      - '.github/workflows/main.yml'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+      - "pubspec.yaml"
+      - ".github/workflows/main.yml"
 
 env:
   env_var: ${{ vars.DEV }}
@@ -25,53 +22,53 @@ jobs:
     outputs:
       version_number: ${{ steps.version.outputs.VERSION }}
     steps:
-    - uses: actions/checkout@v3
-    - name: "Retrieve version"
-      id: version
-      run: |
-        echo "VERSION=$(cat ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
-    - name: Make envfile
-      run: |
-        echo "POS_API_URL=${{ vars.POS_URL }}" >> .env
-    - uses: actions/setup-java@v3
-      with:
-        distribution: "zulu"
-        java-version: "12.x"
-        cache: "gradle"
-    - uses: subosito/flutter-action@v2
-      with:
-        channel: "stable"
-        cache: true
-    - name: Get dependencies
-      run: flutter pub get
-    - name: Build APK
-      run: flutter build apk --split-per-abi --obfuscate --split-debug-info --release
-    - name: Upload APK
-      uses: actions/upload-artifact@v2
-      with:
-        name: app-release
-        path: build/app/outputs/apk/release/
+      - uses: actions/checkout@v3
+      - name: "Retrieve version"
+        id: version
+        run: |
+          echo "VERSION=$(cat ${GITHUB_WORKSPACE}/pubspec.yaml | grep 'version:' | head -1 | cut -f2- -d: | sed -e 's/^[ \t]*//')" >> $GITHUB_OUTPUT
+      - name: Make envfile
+        run: |
+          echo "POS_API_URL=${{ vars.POS_URL }}" >> .env
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "12.x"
+          cache: "gradle"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+      - name: Get dependencies
+        run: flutter pub get
+      - name: Build APK
+        run: flutter build apk --split-per-abi --obfuscate --split-debug-info --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release
+          path: build/app/outputs/apk/release/
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Download APK
-      uses: actions/download-artifact@v2
-      with:
-        name: app-release
-        path: build/app/outputs/apk/release/
-    - name: Create release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        version: ${{ needs.build.outputs.version_number }}
-      run: |
-        gh release create "$version" \
-            --repo="$GITHUB_REPOSITORY" \
-            --title="${GITHUB_REPOSITORY#*/} ${version#v}" \
-            --generate-notes
-    - name: Upload Apk assets to release
-      uses: AButler/upload-release-assets@v3.0
-      with:
-        files: "build/app/outputs/apk/**/*.apk"
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        release-tag: ${{ needs.build.outputs.version_number }}
+      - name: Download APK
+        uses: actions/download-artifact@v2
+        with:
+          name: app-release
+          path: build/app/outputs/apk/release/
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ needs.build.outputs.version_number }}
+        run: |
+          gh release create "$version" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${version#v}" \
+              --generate-notes
+      - name: Upload Apk assets to release
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          files: "build/app/outputs/apk/**/*.apk"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ needs.build.outputs.version_number }}
