@@ -71,7 +71,6 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
               style: defaultPinTheme.textStyle
                   ?.copyWith(color: AppColors.primaryOrange),
             ),
-            onCompleted: (pin) => print(pin),
           ),
           const Spacing.large(),
           RichText(
@@ -84,15 +83,17 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                   recognizer: TapGestureRecognizer()..onTap = () {},
                 ),
               ],
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Get.textTheme.bodySmall,
             ),
             textAlign: TextAlign.center,
           ),
           const Spacing(),
-          const AppButton.compact(
-            onPressed: null,
-            label: 'Continue',
-          ),
+          GetBuilder<EmailVerificationController>(builder: (controller) {
+            return AppButton.compact(
+              onPressed: controller.isComplete ? controller.submitCode : null,
+              label: 'Continue',
+            );
+          }),
           _buildNumberPad(),
         ],
       ),
