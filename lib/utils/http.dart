@@ -17,7 +17,7 @@ Future<Request> accessTokenInterceptor(Request<dynamic> request) async {
 
 Future<Response> debugInterceptor(Request request, Response response) async {
   if (kDebugMode) {
-    print('Sending ${request.method.capitalize} ${request.url}');
+    print('Sending ${request.method.toUpperCase()} ${request.url}');
     print('- headers: ${request.headers}');
     print('- body: ${await request.bodyBytes.bytesToString()}');
     print('And received HTTP ${response.statusCode}');
