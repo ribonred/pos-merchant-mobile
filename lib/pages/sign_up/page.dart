@@ -6,7 +6,7 @@ import '../../components/components.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends GetView<SignUpController> {
   static const routeName = '/sign-up';
 
   const SignUpPage({super.key});
@@ -23,7 +23,7 @@ class SignUpPage extends StatelessWidget {
             labelText: 'Name',
             hintText: 'Your store or restaurant name',
             textInputAction: TextInputAction.next,
-            onChanged: (value) => debugPrint(value),
+            onChanged: (value) => controller.name.value = value,
           ),
           const Spacing(),
           AppTextInput(
@@ -31,7 +31,7 @@ class SignUpPage extends StatelessWidget {
             hintText: 'Your email',
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            onChanged: (value) => debugPrint(value),
+            onChanged: (value) => controller.email.value = value,
           ),
           const Spacing(),
           ObxValue<RxBool>(
@@ -47,8 +47,8 @@ class SignUpPage extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
               textInputAction: TextInputAction.done,
               obscureText: visible.value,
-              onChanged: (value) => debugPrint(value),
-              onSubmitted: (_) => Get.to(EmailVerificationPage.routeName),
+              onChanged: (value) => controller.password.value = value,
+              onSubmitted: (_) => controller.signUp(),
             ),
             true.obs,
           ),
@@ -56,10 +56,7 @@ class SignUpPage extends StatelessWidget {
           AppButton.compact(
             onPressed: () {
               FocusManager.instance.primaryFocus?.unfocus();
-              Get.toNamed(
-                EmailVerificationPage.routeName,
-                arguments: {'email': 'lorem****@gmail.com'},
-              );
+              controller.signUp();
             },
             label: 'Register',
           ),

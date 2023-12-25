@@ -13,6 +13,7 @@ export 'sign_up/sign_up.dart';
 export 'verification/verification.dart';
 export 'welcome/welcome.dart';
 
+const String initialRoute = WelcomePage.routeName;
 List<GetPage> appPages = [
   GetPage(
     name: WelcomePage.routeName,
@@ -22,10 +23,12 @@ List<GetPage> appPages = [
   GetPage(
     name: SignUpPage.routeName,
     page: () => const SignUpPage(),
+    binding: SignUpBinding(),
   ),
   GetPage(
     name: EmailVerificationPage.routeName,
     page: () => const EmailVerificationPage(),
+    middlewares: [SessionMiddleware()],
     binding: EmailVerificationBinding(),
   ),
   GetPage(

@@ -17,7 +17,6 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
     const defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      margin: EdgeInsets.symmetric(horizontal: 10),
       textStyle: TextStyle(
         fontSize: 24.0,
         fontWeight: FontWeight.w600,
@@ -51,18 +50,12 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
             textAlign: TextAlign.center,
           ),
           const Spacing.small(),
-          if (Get.arguments?['email'] != null)
-            Text(
-              Get.arguments['email'],
-              style: Get.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-              textAlign: TextAlign.center,
-            ),
+          __buildEmailAddress(),
           const Spacing.xlarge(),
           Pinput(
             autofocus: true,
             readOnly: true,
+            length: 6,
             controller: controller.codeController,
             defaultPinTheme: defaultPinTheme,
             focusedPinTheme: focusedPinTheme,
@@ -80,7 +73,8 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                 TextSpan(
                   text: 'Resend',
                   style: const TextStyle(color: AppColors.primaryOrange),
-                  recognizer: TapGestureRecognizer()..onTap = () {},
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = controller.resendCode,
                 ),
               ],
               style: Get.textTheme.bodySmall,
@@ -100,7 +94,7 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
     );
   }
 
-  GridView _buildNumberPad() {
+  Widget _buildNumberPad() {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -145,6 +139,28 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
           );
         },
       ),
+    );
+  }
+
+  Widget __buildEmailAddress() {
+    if (controller.accountInVerification == null) return const SizedBox();
+
+    String account = controller.accountInVerification!.split('@')[0];
+    String domain = controller.accountInVerification!.split('@')[1];
+    int visibleLength = ((1 / 3) * account.length).floor();
+
+    account = account.replaceRange(
+      visibleLength,
+      account.length,
+      '*' * (account.length - visibleLength),
+    );
+
+    return Text(
+      '$account@$domain',
+      style: Get.textTheme.titleMedium?.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 }

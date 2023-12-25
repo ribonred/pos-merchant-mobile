@@ -47,7 +47,7 @@ class HomePage extends GetView<HomeController> {
     return PageLayout(
       title: 'Halo Nama Toko yang panjang',
       showBackButton: false,
-      // singleLineTitle: true,
+      singleLineTitle: true,
       actions: [
         IconButton(
           onPressed: () => controller.logout(),
@@ -55,6 +55,64 @@ class HomePage extends GetView<HomeController> {
         )
       ],
       body: [
+        Container(
+          padding: PaddingSizes.medium,
+          decoration: const BoxDecoration(
+            color: AppColors.primaryOrange,
+            borderRadius: BorderRadiusSizes.small,
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 6.0,
+                color: Colors.black38,
+                offset: Offset(0, 2),
+              )
+            ],
+          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.monetization_on,
+                color: Colors.white,
+                size: 48.0,
+              ),
+              const Spacing.horizontalSmall(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Total sales for the day',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  GetX<HomeController>(
+                    builder: (controller) => Text(
+                      'Rp. ${controller.totalSales.value}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const Spacing(),
+        Row(
+          children: [
+            const Expanded(child: Divider()),
+            Padding(
+              padding: PaddingSizes.small,
+              child: Text(
+                '0 orders',
+                style: Get.textTheme.titleMedium,
+              ),
+            ),
+            const Expanded(child: Divider()),
+          ],
+        ),
+        const Spacing(),
         GridView.builder(
           shrinkWrap: true,
           padding: PaddingSizes.zero,
@@ -62,13 +120,15 @@ class HomePage extends GetView<HomeController> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 16.0,
-            crossAxisSpacing: 16.0,
+            crossAxisSpacing: 32.0,
+            childAspectRatio: 0.9,
           ),
           itemCount: items.length,
           itemBuilder: (context, index) {
             final item = items[index];
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 OpenContainer<bool>(
                   closedColor: AppColors.secondaryOrange,
@@ -81,7 +141,7 @@ class HomePage extends GetView<HomeController> {
                     child: Icon(
                       item['icon'],
                       color: Colors.white,
-                      size: 64.0,
+                      size: 86.0,
                     ),
                   ),
                   openBuilder: (context, close) => item['page'],
@@ -93,55 +153,13 @@ class HomePage extends GetView<HomeController> {
                       .textTheme
                       .titleSmall
                       ?.copyWith(fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
                 ),
               ],
             );
           },
         )
       ],
-      callToAction: Container(
-        padding: PaddingSizes.medium,
-        decoration: const BoxDecoration(
-          color: AppColors.primaryOrange,
-          borderRadius: BorderRadiusSizes.small,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 6.0,
-              color: Colors.black38,
-              offset: Offset(0, 2),
-            )
-          ],
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.monetization_on,
-              color: Colors.white,
-              size: 48.0,
-            ),
-            const Spacing.horizontalSmall(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Total sales for the day',
-                  style: TextStyle(color: Colors.white),
-                ),
-                GetX<HomeController>(
-                  builder: (controller) => Text(
-                    'Rp. ${controller.totalSales.value}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
