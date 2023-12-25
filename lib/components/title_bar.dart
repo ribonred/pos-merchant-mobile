@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'components.dart';
 
 class TitleBar extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? subtitle;
   final List<Widget>? actions;
   final bool singleLine;
@@ -13,7 +13,7 @@ class TitleBar extends StatelessWidget {
 
   const TitleBar({
     super.key,
-    required this.title,
+    this.title,
     this.subtitle,
     this.actions,
     this.singleLine = false,
@@ -28,39 +28,48 @@ class TitleBar extends StatelessWidget {
       padding: const EdgeInsets.only(right: 8.0),
       icon: const Icon(Icons.arrow_back_ios_new),
     );
-    Widget titleText = AutoSizeText(
-      title,
-      style: Theme.of(context)
-          .textTheme
-          .headlineSmall
-          ?.copyWith(fontWeight: FontWeight.w600),
-      maxLines: 1,
-    );
-    Widget titleWidget = Padding(
-      padding: singleLine && showBackButton
-          ? EdgeInsets.zero
-          : const EdgeInsets.symmetric(horizontal: 16.0),
-      // padding: const EdgeInsets.only(left: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (singleLine && actions != null)
-            // Row(children: [titleText, const Spacer(), ...actions!])
-            titleText
-          else
-            titleText,
-          if (subtitle != null) ...[
-            if (!singleLine) const Spacing.small(),
-            Text(subtitle!, style: Theme.of(context).textTheme.titleSmall)
-          ],
-        ],
-      ),
-    );
+
+    Widget? titleText = title == null
+        ? null
+        : AutoSizeText(
+            title!,
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontWeight: FontWeight.w600),
+            maxLines: 1,
+          );
+    Widget? titleWidget = titleText == null
+        ? null
+        : Padding(
+            padding: singleLine && showBackButton
+                ? EdgeInsets.zero
+                : const EdgeInsets.symmetric(horizontal: 16.0),
+            // padding: const EdgeInsets.only(left: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (singleLine && actions != null)
+                  // Row(children: [titleText, const Spacer(), ...actions!])
+                  titleText
+                else
+                  titleText,
+                if (subtitle != null) ...[
+                  if (!singleLine) const Spacing.small(),
+                  Text(subtitle!, style: Theme.of(context).textTheme.titleSmall)
+                ],
+              ],
+            ),
+          );
+
     Widget topRow = Row(
       children: [
         if (showBackButton) backButton,
-        if (singleLine) Expanded(child: titleWidget) else const Spacer(),
+        if (title != null && singleLine)
+          Expanded(child: titleWidget!)
+        else
+          const Spacer(),
         if (actions != null) ...actions!,
       ],
     );
@@ -69,7 +78,7 @@ class TitleBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         topRow,
-        if (!singleLine) ...[const Spacing(), titleWidget],
+        if (!singleLine) ...[const Spacing(), if (title != null) titleWidget!],
       ],
     );
   }

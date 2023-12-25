@@ -1,11 +1,11 @@
 name: pos_mobile_merchant
 description: Merchant app for Soberdev's POS solution
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
-  sdk: '>=3.2.2 <4.0.0'
+  sdk: ">=3.2.2 <4.0.0"
 
 dependencies:
   animations: ^2.0.10
@@ -17,6 +17,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   get: ^4.6.6
   hive_flutter: ^1.1.0
+  pinput: ^3.0.1
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1

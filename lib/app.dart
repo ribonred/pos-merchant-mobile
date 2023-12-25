@@ -24,7 +24,7 @@ class POSApp extends StatelessWidget {
         useMaterial3: true,
       ),
       getPages: appPages,
-      initialRoute: WelcomePage.routeName,
+      initialRoute: initialRoute,
     );
   }
 }

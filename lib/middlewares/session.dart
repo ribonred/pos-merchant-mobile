@@ -9,13 +9,25 @@ class SessionMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    String? accessToken = db.getAccessToken();
-    bool hasSessionId = accessToken != null && accessToken != '';
+    final accessToken = db.getAccessToken();
+    final hasSessionId = accessToken != null && accessToken != '';
+    final isInVerification = db.isInVerificationProcess;
 
-    String routeName = route == WelcomePage.routeName
-        ? HomePage.routeName
-        : WelcomePage.routeName;
+    switch (route) {
+      case initialRoute:
+        if (hasSessionId) {
+          return const RouteSettings(name: HomePage.routeName);
+        } else if (isInVerification) {
+          return const RouteSettings(name: EmailVerificationPage.routeName);
+        }
+        break;
+      case EmailVerificationPage.routeName:
+        if (!isInVerification) {
+          return const RouteSettings(name: initialRoute);
+        }
+        break;
+    }
 
-    return hasSessionId ? RouteSettings(name: routeName) : null;
+    return null;
   }
 }

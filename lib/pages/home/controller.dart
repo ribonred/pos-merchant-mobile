@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../../models/models.dart';
+import '../../providers/providers.dart';
 import '../../services/services.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
@@ -20,9 +22,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getQrMenu() async {
-    String accessToken = db.getAccessToken()!;
-
-    final response = await api.getQrMenu(accessToken);
+    final response = await api.getQrMenu();
     response.handleResponse(
       onSuccess: (result) async {
         result as QrCode;

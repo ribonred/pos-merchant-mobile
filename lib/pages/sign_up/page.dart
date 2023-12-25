@@ -6,19 +6,26 @@ import '../../components/components.dart';
 import '../../utils/utils.dart';
 import '../pages.dart';
 
-class SignInPage extends GetView<SignInController> {
-  static const routeName = '/sign-in';
+class SignUpPage extends GetView<SignUpController> {
+  static const routeName = '/sign-up';
 
-  const SignInPage({super.key});
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: PageLayout(
-        title: 'Sign in',
-        subtitle: 'Sign in to your account',
+        title: 'Sign up',
+        subtitle: 'Create your account',
         body: [
+          AppTextInput(
+            labelText: 'Name',
+            hintText: 'Your store or restaurant name',
+            textInputAction: TextInputAction.next,
+            onChanged: (value) => controller.name.value = value,
+          ),
+          const Spacing(),
           AppTextInput(
             labelText: 'Email',
             hintText: 'Your email',
@@ -41,70 +48,34 @@ class SignInPage extends GetView<SignInController> {
               textInputAction: TextInputAction.done,
               obscureText: visible.value,
               onChanged: (value) => controller.password.value = value,
-              onSubmitted: (_) => controller.logIn(),
+              onSubmitted: (_) => controller.signUp(),
             ),
             true.obs,
           ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: () {},
-              style: const ButtonStyle(
-                padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.zero),
-                foregroundColor: MaterialStatePropertyAll<Color>(
-                  AppColors.primaryOrange,
-                ),
-              ),
-              child: const Text('Forgot password?'),
-            ),
-          ),
-          const Spacing.small(),
+          const Spacing(),
           AppButton.compact(
             onPressed: () {
               FocusManager.instance.primaryFocus?.unfocus();
-              controller.logIn();
+              controller.signUp();
             },
-            label: 'Log in',
+            label: 'Register',
           ),
           const Spacing(),
           RichText(
             text: TextSpan(
-              text: 'Don\'t have an account? ',
+              text: 'Already have an account? ',
               children: [
                 TextSpan(
-                  text: 'Sign up',
+                  text: 'Sign in',
                   style: const TextStyle(color: AppColors.primaryOrange),
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () => Get.toNamed(SignUpPage.routeName),
+                    ..onTap = () => Get.toNamed(SignInPage.routeName),
                 ),
               ],
               style: Theme.of(context).textTheme.bodySmall,
             ),
             textAlign: TextAlign.center,
           ),
-          // const Spacing.large(),
-          // const Row(
-          //   children: [
-          //     Expanded(child: Divider()),
-          //     Padding(
-          //       padding: EdgeInsets.symmetric(horizontal: 8.0),
-          //       child: Text('Or with'),
-          //     ),
-          //     Expanded(child: Divider()),
-          //   ],
-          // ),
-          // const Spacing.large(),
-          // AppButton.outlinedCompact(
-          //   onPressed: () {},
-          //   leading: const Icon(Icons.abc),
-          //   label: 'Sign in with Google',
-          // ),
-          // const Spacing.small(),
-          // AppButton.outlinedCompact(
-          //   onPressed: () {},
-          //   leading: const Icon(Icons.phone),
-          //   label: 'Sign in with phone number',
-          // ),
         ],
       ),
     );
