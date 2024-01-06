@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../models/models.dart';
 import '../../providers/providers.dart';
 import '../../services/services.dart';
-import '../../utils/utils.dart';
 import '../pages.dart';
 
 class HomeController extends GetxController {
@@ -12,25 +11,17 @@ class HomeController extends GetxController {
   final DatabaseService db = Get.find();
   final MerchantProvider api = Get.find();
 
-  final RxList<QrMenu?> qrMenu = <QrMenu?>[].obs;
+  final RxInt currentIndex = 0.obs;
+  final RxList<OrderResult> orders = <OrderResult>[].obs;
   final RxDouble totalSales = 0.0.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getQrMenu();
-  }
+  List<OrderResult> get paidOrders => orders
+      .where((element) => element.orderTotal != '0.00')
+      .toList(growable: false);
 
-  Future<void> getQrMenu() async {
-    final response = await api.getQrMenu();
-    response.handleResponse(
-      onSuccess: (result) async {
-        result as QrCode;
-
-        qrMenu.assignAll(result.results!);
-      },
-    );
-  }
+  List<OrderResult> get unpaidOrders => orders
+      .where((element) => element.orderTotal == '0.00')
+      .toList(growable: false);
 
   Future<void> logout() async {
     await db.clearSession();

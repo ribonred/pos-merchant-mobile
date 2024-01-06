@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'components.dart';
 
 class TitleBar extends StatelessWidget {
+  final int? nestedNavigationIndex;
   final String? title;
   final String? subtitle;
   final List<Widget>? actions;
@@ -13,6 +14,7 @@ class TitleBar extends StatelessWidget {
 
   const TitleBar({
     super.key,
+    this.nestedNavigationIndex,
     this.title,
     this.subtitle,
     this.actions,
@@ -23,7 +25,7 @@ class TitleBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget backButton = IconButton(
-      onPressed: () => Get.back(),
+      onPressed: () => Get.back(id: nestedNavigationIndex),
       tooltip: 'Back',
       padding: const EdgeInsets.only(right: 8.0),
       icon: const Icon(Icons.arrow_back_ios_new),
